@@ -1,6 +1,7 @@
 <template>
     <div :style="{'background-color': color}"
          class="grid-item"
+         :class="{ active: active }"
          @click="itemClick"
     ></div>
 </template>
@@ -22,7 +23,17 @@
         methods: {
             itemClick() {
                 this.$emit('selectElem')
+            },
+            onCreate() {
+                this.active = true
+                let that = this;
+                setTimeout(function () {
+                    that.active = false;
+                }, 1000);
             }
+        },
+        created() {
+            this.onCreate()
         }
     };
 </script>
@@ -33,7 +44,6 @@
         width: 25%;
         border: 1px solid #04847f;
         background-color: #abbfd4;
-
         &:after {
             content: "";
             position: absolute;
@@ -42,7 +52,7 @@
             left: 0;
             top: 0;
             background-color: rgba(#fff, 1);
-            transition: 0.5s;
+            transition: 0.15s;
         }
 
         &.active:after {

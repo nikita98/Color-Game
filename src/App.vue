@@ -9,7 +9,7 @@
             ></grid-item>
         </div>
         <div class="game__start">
-            <button class="game__button">Старт</button>
+            <button class="game__button" @click="gameStart()">Старт</button>
             <div class="timer">00:00:00</div>
         </div>
     </div>
@@ -24,38 +24,44 @@
         components: {GridItem},
         data() {
             return {
-                number: 24,
+                start: false,
+                number: 16,
                 first: false,
                 second: false,
                 animation: false,
-                grid: []
+                grid: [],
+                colors: []
             };
-        },
-
-        created() {
-            this.notRandomColors();
         },
         comments: {
             gridItem
         },
         methods: {
+            gameStart() {
+                this.colors = [];
+                this.grid = [];
+                this.notRandomColors();
+                this.start = true;
+                // for(let i = 0 ; i < this.number; i++){
+                //
+                // }
+            },
             notRandomColors() {
-                let colors = [],
-                    colorsCol = this.number / 2,
+                let colorsCol = this.number / 2,
                     radix = 0,
                     colorsTemplate = [];
 
-                while (radix * radix * radix < colorsCol) {
-                    radix++;
-                }
-                while (radix * radix * radix < colorsCol) {
-                    radix++;
-                }
-
+                createRadix();
                 createColorsTemplate();
-                createColors(colors);
-                colors = randomColors(colors);
-                createGrid(colors, this.grid);
+                this.colors = createColors(this.colors);
+                this.colors = randomColors(this.colors);
+                this.grid = fillGrid(this.colors);
+
+                function createRadix(){
+                    while (radix * radix * radix < colorsCol) {
+                        radix++;
+                    }
+                }
 
                 function createColorsTemplate() {
                     for (let i = 0; i < colorsCol; i++) {
@@ -78,6 +84,7 @@
                             colors[i][j] = (Math.floor((255 / (radix - 1))) * colorsTemplate[i][j]);
                         }
                     }
+                    return colors;
                 }
 
                 function randomColors(colors) {
@@ -86,34 +93,34 @@
                     function compareRandom() {
                         return Math.random() - 0.5;
                     }
+
                     colors.sort(compareRandom);
                     colors.sort(compareRandom);
                     return colors;
                 }
 
-                function createGrid(colors, grid) {
+                function fillGrid(colors) {
+                    let grid = [];
                     for (let i = 0; i < colors.length; i++) {
                         grid[i] = {index: i, color: "#"};
                         for (let j = 0; j < colors[j].length; j++) {
                             let color = colors[i][j].toString(16);
                             grid[i].color += (color.length < 2 ? color + color : color)
-                            // grid[i] += (colors[i][j].toString(16) ? colors[i][j].toString(16) : "00");
                         }
                     }
+                    return grid;
                 }
             },
             selectElem() {
-                if (!this.animation) {
+                if (!this.animation && this.start) {
                     if (!this.first) {
                         this.first = event.target;
                         this.first.classList.add("active");
-                    } else {
+                    } else if (this.first !== event.target) {
                         this.second = event.target;
                         this.second.classList.add("active");
                         this.animation = true;
                         let that = this;
-                        // console.log(this.first.style.backgroundColor);
-                        // console.log(this.second);
                         setTimeout(function () {
                             that.first.classList.remove("active");
                             that.second.classList.remove("active");
@@ -124,7 +131,7 @@
                             that.first = "";
                             that.second = "";
                             that.animation = false;
-                        }, 1000);
+                        }, 300);
                     }
                 }
             }
@@ -150,7 +157,6 @@
             flex-wrap: wrap;
             background-color: #fff;
             border: 1px solid #0998b8;
-            margin-bottom: 30px;
         }
     }
 </style>
