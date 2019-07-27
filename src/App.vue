@@ -1,93 +1,70 @@
 <template>
-  <div class="wrapper">
-    <div class="contaiber-fluid content">
-      <div class="row">
-        <div class="col-lg-3">
-          <card
-            avatar="img/5.webp"
-            name="Terrance arnold"
-            job="Art director"
-            text="Hi! I'm Adrian the Senior UI Designer at AmazingSurge. We hope you enjoy the design and quality of Social."
-            follower="260"
-            following="180"
-            tweets="2000"
-          ></card>
-        </div>
-        <div class="col-lg-9">
-          <panel></panel>
-        </div>
+  <div class="game">
+    <div class="game__inner">
+      <div class="game__grid">
+        <!-- Сдаюсь, не могу понять, как мне отправить обьект Vue и приделать к нему класс.. -->
+        <div
+          class="game__grid-item"
+          :class="{ active: isActive }"
+          v-for="(item, index) in grid"
+          :key="index"
+          @click="selectElem(item, index)"
+        ></div>
       </div>
+      <button class="game__button">Старт</button>
+      <div class="timer">00:00:00</div>
     </div>
-    <div class="footer">футер</div>
   </div>
 </template>
 
 <script>
-import card from "./components/card.vue";
-import panel from "./components/panel.vue";
-import post from "./components/post.vue";
-
-export { post };
-
 export default {
   name: "app",
-  // data: {},
   data() {
     return {
-      users: [
-        { id: "0", name: "Terrance arnold", online: "", avatar: "img/5.webp" },
-        { id: "1", name: "Owen Hunt", online: "", avatar: "img/4.webp" },
-        { id: "2", name: "Ida Fleming", online: "", avatar: "img/2.jpg" },
-        {
-          id: "3",
-          name: "Julius",
-          online: "10 minutes ago",
-          avatar: "img/3.jpg"
-        }
-      ]
+      isActive: false,
+      grid: []
     };
   },
-  components: {
-    card,
-    panel,
-    post
+  created() {
+    this.creatgrid();
+  },
+  methods: {
+    creatgrid() {
+      for (let i = 0; i < 16; i++) {
+        this.grid[i] = false;
+      }
+    },
+    selectElem(item, index) {
+      console.log(item, index);
+      console.log(this);
+    }
   }
+  // components: {}
 };
 </script>
 
-<style lang="scss">
-html,
-body {
-  height: 100%;
-}
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.content {
-  flex: 1 0 auto;
-  min-height: 100%;
-  background: #f1f4f5;
-  padding: 30px;
-}
-.footer {
-  flex: 0 0 auto;
-}
-.avatar {
-  display: block;
-  border-radius: 70%;
-  overflow: hidden;
-  &__img {
+
+<style scoped lang="scss">
+.game {
+  box-sizing: border-box;
+  width: 500px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #b1cde0;
+  &__grid {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border: 1px solid #0998b8;
+    margin-bottom: 30px;
   }
-}
-.waves-effect {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  overflow: hidden;
-  cursor: pointer;
-  user-select: none;
+  &__grid-item {
+    box-sizing: border-box;
+    width: 25%;
+    height: 100px;
+    border: 1px solid #0998b8;
+  }
 }
 </style>
