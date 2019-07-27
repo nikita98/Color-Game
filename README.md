@@ -1,4 +1,4 @@
-# task3
+# Color Game
 
 ## Project setup
 ```
