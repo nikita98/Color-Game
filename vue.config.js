@@ -1,3 +1,3 @@
 module.exports = {
-  publickPath: "/color-game/dist",
+  publickPath: "/color-game/",
 };
