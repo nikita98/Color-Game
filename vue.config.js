@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: "color-game/12313123",
+  publicPath: "/color-game/12313123",
 };
