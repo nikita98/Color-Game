@@ -9,19 +9,18 @@
             ></grid-item>
         </div>
         <div class="game__start">
+            <!-- <timer></timer> -->
             <button class="game__button" @click="gameStart()">Старт</button>
-            <div class="timer">00:00:00</div>
+            <button class="game__button" @click="gameEnd()">Стоп</button>
         </div>
     </div>
 </template>
 
 <script>
     import gridItem from './components/grid-item.vue';
-    import GridItem from "./components/grid-item";
+    import timer from './components/timer.vue';
 
     export default {
-        name: "app",
-        components: {GridItem},
         data() {
             return {
                 start: false,
@@ -33,20 +32,29 @@
                 colors: []
             };
         },
-        comments: {
-            gridItem
+        components: {
+            gridItem,
+            timer
         },
         methods: {
             gameStart() {
-                this.colors = [];
-                this.grid = [];
-                this.notRandomColors();
-                this.start = true;
-                // for(let i = 0 ; i < this.number; i++){
-                //
-                // }
+                if(!this.start){
+                    this.colors = [];
+                    this.grid = [];
+                    this.first = false;
+                    this.second = false;
+                    this.notRandomColors();
+                    this.start = true;
+                }
+            },
+            gameEnd() {
+                this.grid = this.grid.slice(1,1);
+                this.start = false;
             },
             notRandomColors() {
+
+
+
                 let colorsCol = this.number / 2,
                     radix = 0,
                     colorsTemplate = [];
